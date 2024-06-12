@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSEQ FOR ID LBRACE LE LPAREN NUMBER PLUS PRINTLN RBRACE RPAREN SEMIstatement : FOR LPAREN assignment SEMI condition SEMI increment RPAREN blockassignment : ID EQ expressioncondition : expression LE expressionincrement : ID PLUS PLUSexpression : ID\n                  | NUMBERblock : LBRACE statements RBRACEstatements : statement\n                  | statements statementstatement : PRINTLN LPAREN expression RPAREN SEMI'
+_lr_signature = 'ASSIGN DOT FOR ID INT LBRACE LE LPAREN NUMBER OUT PLUS PRINTLN RBRACE RPAREN SEMIprogram : declaration for_statementdeclaration : INT ID SEMIfor_statement : FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACEstatement : OUT DOT PRINTLN LPAREN ID RPAREN SEMI'
     
-_lr_action_items = {'FOR':([0,17,25,26,28,29,30,31,],[2,-10,-1,2,2,-8,-7,-9,]),'PRINTLN':([0,17,25,26,28,29,30,31,],[3,-10,-1,3,3,-8,-7,-9,]),'$end':([1,17,25,30,],[0,-10,-1,-7,]),'LPAREN':([2,3,],[4,5,]),'ID':([4,5,11,12,18,19,],[7,9,9,9,21,9,]),'NUMBER':([5,11,12,19,],[10,10,10,10,]),'SEMI':([6,9,10,13,14,16,22,],[11,-5,-6,17,18,-2,-3,]),'EQ':([7,],[12,]),'RPAREN':([8,9,10,20,27,],[13,-5,-6,23,-4,]),'LE':([9,10,15,],[-5,-6,19,]),'RBRACE':([17,25,28,29,30,31,],[-10,-1,30,-8,-7,-9,]),'PLUS':([21,24,],[24,27,]),'LBRACE':([23,],[26,]),}
+_lr_action_items = {'INT':([0,],[3,]),'$end':([1,4,23,],[0,-1,-3,]),'FOR':([2,8,],[5,-2,]),'ID':([3,7,12,16,26,],[6,9,13,17,27,]),'LPAREN':([5,25,],[7,26,]),'SEMI':([6,11,15,28,],[8,12,16,29,]),'ASSIGN':([9,],[10,]),'NUMBER':([10,14,],[11,15,]),'LE':([13,],[14,]),'PLUS':([17,],[18,]),'RPAREN':([18,27,],[19,28,]),'LBRACE':([19,],[20,]),'OUT':([20,],[22,]),'RBRACE':([21,29,],[23,-4,]),'DOT':([22,],[24,]),'PRINTLN':([24,],[25,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,26,28,],[1,29,31,]),'assignment':([4,],[6,]),'expression':([5,11,12,19,],[8,15,16,22,]),'condition':([11,],[14,]),'increment':([18,],[20,]),'block':([23,],[25,]),'statements':([26,],[28,]),}
+_lr_goto_items = {'program':([0,],[1,]),'declaration':([0,],[2,]),'for_statement':([2,],[4,]),'statement':([20,],[21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,15 +26,9 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statement","S'",1,None,None,None),
-  ('statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block','statement',9,'p_statement_for','my_parser.py',11),
-  ('assignment -> ID EQ expression','assignment',3,'p_assignment','my_parser.py',15),
-  ('condition -> expression LE expression','condition',3,'p_condition','my_parser.py',19),
-  ('increment -> ID PLUS PLUS','increment',3,'p_increment','my_parser.py',23),
-  ('expression -> ID','expression',1,'p_expression','my_parser.py',27),
-  ('expression -> NUMBER','expression',1,'p_expression','my_parser.py',28),
-  ('block -> LBRACE statements RBRACE','block',3,'p_block','my_parser.py',32),
-  ('statements -> statement','statements',1,'p_statements','my_parser.py',36),
-  ('statements -> statements statement','statements',2,'p_statements','my_parser.py',37),
-  ('statement -> PRINTLN LPAREN expression RPAREN SEMI','statement',5,'p_statement_println','my_parser.py',44),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> declaration for_statement','program',2,'p_program','analyzer.py',46),
+  ('declaration -> INT ID SEMI','declaration',3,'p_declaration','analyzer.py',50),
+  ('for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE','for_statement',16,'p_for_statement','analyzer.py',55),
+  ('statement -> OUT DOT PRINTLN LPAREN ID RPAREN SEMI','statement',7,'p_statement','analyzer.py',62),
 ]

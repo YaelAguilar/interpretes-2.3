@@ -2,323 +2,253 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Grammar
 
-Rule 0     S' -> statement
-Rule 1     statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block
-Rule 2     assignment -> ID EQ expression
-Rule 3     condition -> expression LE expression
-Rule 4     increment -> ID PLUS PLUS
-Rule 5     expression -> ID
-Rule 6     expression -> NUMBER
-Rule 7     block -> LBRACE statements RBRACE
-Rule 8     statements -> statement
-Rule 9     statements -> statements statement
-Rule 10    statement -> PRINTLN LPAREN expression RPAREN SEMI
+Rule 0     S' -> program
+Rule 1     program -> declaration for_statement
+Rule 2     declaration -> INT ID SEMI
+Rule 3     for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
+Rule 4     statement -> OUT DOT PRINTLN LPAREN ID RPAREN SEMI
 
 Terminals, with rules where they appear
 
-EQ                   : 2
-FOR                  : 1
-ID                   : 2 4 5
-LBRACE               : 7
+ASSIGN               : 3
+DOT                  : 4
+FOR                  : 3
+ID                   : 2 3 3 3 4
+INT                  : 2
+LBRACE               : 3
 LE                   : 3
-LPAREN               : 1 10
-NUMBER               : 6
-PLUS                 : 4 4
-PRINTLN              : 10
-RBRACE               : 7
-RPAREN               : 1 10
-SEMI                 : 1 1 10
+LPAREN               : 3 4
+NUMBER               : 3 3
+OUT                  : 4
+PLUS                 : 3
+PRINTLN              : 4
+RBRACE               : 3
+RPAREN               : 3 4
+SEMI                 : 2 3 3 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignment           : 1
-block                : 1
-condition            : 1
-expression           : 2 3 3 10
-increment            : 1
-statement            : 8 9 0
-statements           : 7 9
+declaration          : 1
+for_statement        : 1
+program              : 0
+statement            : 3
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . statement
-    (1) statement -> . FOR LPAREN assignment SEMI condition SEMI increment RPAREN block
-    (10) statement -> . PRINTLN LPAREN expression RPAREN SEMI
+    (0) S' -> . program
+    (1) program -> . declaration for_statement
+    (2) declaration -> . INT ID SEMI
 
-    FOR             shift and go to state 2
-    PRINTLN         shift and go to state 3
+    INT             shift and go to state 3
 
-    statement                      shift and go to state 1
+    program                        shift and go to state 1
+    declaration                    shift and go to state 2
 
 state 1
 
-    (0) S' -> statement .
+    (0) S' -> program .
 
 
 
 state 2
 
-    (1) statement -> FOR . LPAREN assignment SEMI condition SEMI increment RPAREN block
+    (1) program -> declaration . for_statement
+    (3) for_statement -> . FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    LPAREN          shift and go to state 4
+    FOR             shift and go to state 5
 
+    for_statement                  shift and go to state 4
 
 state 3
 
-    (10) statement -> PRINTLN . LPAREN expression RPAREN SEMI
+    (2) declaration -> INT . ID SEMI
 
-    LPAREN          shift and go to state 5
+    ID              shift and go to state 6
 
 
 state 4
 
-    (1) statement -> FOR LPAREN . assignment SEMI condition SEMI increment RPAREN block
-    (2) assignment -> . ID EQ expression
+    (1) program -> declaration for_statement .
 
-    ID              shift and go to state 7
+    $end            reduce using rule 1 (program -> declaration for_statement .)
 
-    assignment                     shift and go to state 6
 
 state 5
 
-    (10) statement -> PRINTLN LPAREN . expression RPAREN SEMI
-    (5) expression -> . ID
-    (6) expression -> . NUMBER
+    (3) for_statement -> FOR . LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    ID              shift and go to state 9
-    NUMBER          shift and go to state 10
+    LPAREN          shift and go to state 7
 
-    expression                     shift and go to state 8
 
 state 6
 
-    (1) statement -> FOR LPAREN assignment . SEMI condition SEMI increment RPAREN block
+    (2) declaration -> INT ID . SEMI
 
-    SEMI            shift and go to state 11
+    SEMI            shift and go to state 8
 
 
 state 7
 
-    (2) assignment -> ID . EQ expression
+    (3) for_statement -> FOR LPAREN . ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    EQ              shift and go to state 12
+    ID              shift and go to state 9
 
 
 state 8
 
-    (10) statement -> PRINTLN LPAREN expression . RPAREN SEMI
+    (2) declaration -> INT ID SEMI .
 
-    RPAREN          shift and go to state 13
+    FOR             reduce using rule 2 (declaration -> INT ID SEMI .)
 
 
 state 9
 
-    (5) expression -> ID .
+    (3) for_statement -> FOR LPAREN ID . ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    RPAREN          reduce using rule 5 (expression -> ID .)
-    LE              reduce using rule 5 (expression -> ID .)
-    SEMI            reduce using rule 5 (expression -> ID .)
+    ASSIGN          shift and go to state 10
 
 
 state 10
 
-    (6) expression -> NUMBER .
+    (3) for_statement -> FOR LPAREN ID ASSIGN . NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    RPAREN          reduce using rule 6 (expression -> NUMBER .)
-    LE              reduce using rule 6 (expression -> NUMBER .)
-    SEMI            reduce using rule 6 (expression -> NUMBER .)
+    NUMBER          shift and go to state 11
 
 
 state 11
 
-    (1) statement -> FOR LPAREN assignment SEMI . condition SEMI increment RPAREN block
-    (3) condition -> . expression LE expression
-    (5) expression -> . ID
-    (6) expression -> . NUMBER
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER . SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    ID              shift and go to state 9
-    NUMBER          shift and go to state 10
+    SEMI            shift and go to state 12
 
-    condition                      shift and go to state 14
-    expression                     shift and go to state 15
 
 state 12
 
-    (2) assignment -> ID EQ . expression
-    (5) expression -> . ID
-    (6) expression -> . NUMBER
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI . ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    ID              shift and go to state 9
-    NUMBER          shift and go to state 10
+    ID              shift and go to state 13
 
-    expression                     shift and go to state 16
 
 state 13
 
-    (10) statement -> PRINTLN LPAREN expression RPAREN . SEMI
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID . LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    SEMI            shift and go to state 17
+    LE              shift and go to state 14
 
 
 state 14
 
-    (1) statement -> FOR LPAREN assignment SEMI condition . SEMI increment RPAREN block
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE . NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    SEMI            shift and go to state 18
+    NUMBER          shift and go to state 15
 
 
 state 15
 
-    (3) condition -> expression . LE expression
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER . SEMI ID PLUS RPAREN LBRACE statement RBRACE
 
-    LE              shift and go to state 19
+    SEMI            shift and go to state 16
 
 
 state 16
 
-    (2) assignment -> ID EQ expression .
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI . ID PLUS RPAREN LBRACE statement RBRACE
 
-    SEMI            reduce using rule 2 (assignment -> ID EQ expression .)
+    ID              shift and go to state 17
 
 
 state 17
 
-    (10) statement -> PRINTLN LPAREN expression RPAREN SEMI .
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID . PLUS RPAREN LBRACE statement RBRACE
 
-    $end            reduce using rule 10 (statement -> PRINTLN LPAREN expression RPAREN SEMI .)
-    RBRACE          reduce using rule 10 (statement -> PRINTLN LPAREN expression RPAREN SEMI .)
-    FOR             reduce using rule 10 (statement -> PRINTLN LPAREN expression RPAREN SEMI .)
-    PRINTLN         reduce using rule 10 (statement -> PRINTLN LPAREN expression RPAREN SEMI .)
+    PLUS            shift and go to state 18
 
 
 state 18
 
-    (1) statement -> FOR LPAREN assignment SEMI condition SEMI . increment RPAREN block
-    (4) increment -> . ID PLUS PLUS
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS . RPAREN LBRACE statement RBRACE
 
-    ID              shift and go to state 21
+    RPAREN          shift and go to state 19
 
-    increment                      shift and go to state 20
 
 state 19
 
-    (3) condition -> expression LE . expression
-    (5) expression -> . ID
-    (6) expression -> . NUMBER
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN . LBRACE statement RBRACE
 
-    ID              shift and go to state 9
-    NUMBER          shift and go to state 10
+    LBRACE          shift and go to state 20
 
-    expression                     shift and go to state 22
 
 state 20
 
-    (1) statement -> FOR LPAREN assignment SEMI condition SEMI increment . RPAREN block
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE . statement RBRACE
+    (4) statement -> . OUT DOT PRINTLN LPAREN ID RPAREN SEMI
 
-    RPAREN          shift and go to state 23
+    OUT             shift and go to state 22
 
+    statement                      shift and go to state 21
 
 state 21
 
-    (4) increment -> ID . PLUS PLUS
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement . RBRACE
 
-    PLUS            shift and go to state 24
+    RBRACE          shift and go to state 23
 
 
 state 22
 
-    (3) condition -> expression LE expression .
+    (4) statement -> OUT . DOT PRINTLN LPAREN ID RPAREN SEMI
 
-    SEMI            reduce using rule 3 (condition -> expression LE expression .)
+    DOT             shift and go to state 24
 
 
 state 23
 
-    (1) statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN . block
-    (7) block -> . LBRACE statements RBRACE
+    (3) for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE .
 
-    LBRACE          shift and go to state 26
+    $end            reduce using rule 3 (for_statement -> FOR LPAREN ID ASSIGN NUMBER SEMI ID LE NUMBER SEMI ID PLUS RPAREN LBRACE statement RBRACE .)
 
-    block                          shift and go to state 25
 
 state 24
 
-    (4) increment -> ID PLUS . PLUS
+    (4) statement -> OUT DOT . PRINTLN LPAREN ID RPAREN SEMI
 
-    PLUS            shift and go to state 27
+    PRINTLN         shift and go to state 25
 
 
 state 25
 
-    (1) statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block .
+    (4) statement -> OUT DOT PRINTLN . LPAREN ID RPAREN SEMI
 
-    $end            reduce using rule 1 (statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block .)
-    RBRACE          reduce using rule 1 (statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block .)
-    FOR             reduce using rule 1 (statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block .)
-    PRINTLN         reduce using rule 1 (statement -> FOR LPAREN assignment SEMI condition SEMI increment RPAREN block .)
+    LPAREN          shift and go to state 26
 
 
 state 26
 
-    (7) block -> LBRACE . statements RBRACE
-    (8) statements -> . statement
-    (9) statements -> . statements statement
-    (1) statement -> . FOR LPAREN assignment SEMI condition SEMI increment RPAREN block
-    (10) statement -> . PRINTLN LPAREN expression RPAREN SEMI
+    (4) statement -> OUT DOT PRINTLN LPAREN . ID RPAREN SEMI
 
-    FOR             shift and go to state 2
-    PRINTLN         shift and go to state 3
+    ID              shift and go to state 27
 
-    statements                     shift and go to state 28
-    statement                      shift and go to state 29
 
 state 27
 
-    (4) increment -> ID PLUS PLUS .
+    (4) statement -> OUT DOT PRINTLN LPAREN ID . RPAREN SEMI
 
-    RPAREN          reduce using rule 4 (increment -> ID PLUS PLUS .)
+    RPAREN          shift and go to state 28
 
 
 state 28
 
-    (7) block -> LBRACE statements . RBRACE
-    (9) statements -> statements . statement
-    (1) statement -> . FOR LPAREN assignment SEMI condition SEMI increment RPAREN block
-    (10) statement -> . PRINTLN LPAREN expression RPAREN SEMI
+    (4) statement -> OUT DOT PRINTLN LPAREN ID RPAREN . SEMI
 
-    RBRACE          shift and go to state 30
-    FOR             shift and go to state 2
-    PRINTLN         shift and go to state 3
+    SEMI            shift and go to state 29
 
-    statement                      shift and go to state 31
 
 state 29
 
-    (8) statements -> statement .
+    (4) statement -> OUT DOT PRINTLN LPAREN ID RPAREN SEMI .
 
-    RBRACE          reduce using rule 8 (statements -> statement .)
-    FOR             reduce using rule 8 (statements -> statement .)
-    PRINTLN         reduce using rule 8 (statements -> statement .)
-
-
-state 30
-
-    (7) block -> LBRACE statements RBRACE .
-
-    $end            reduce using rule 7 (block -> LBRACE statements RBRACE .)
-    RBRACE          reduce using rule 7 (block -> LBRACE statements RBRACE .)
-    FOR             reduce using rule 7 (block -> LBRACE statements RBRACE .)
-    PRINTLN         reduce using rule 7 (block -> LBRACE statements RBRACE .)
-
-
-state 31
-
-    (9) statements -> statements statement .
-
-    RBRACE          reduce using rule 9 (statements -> statements statement .)
-    FOR             reduce using rule 9 (statements -> statements statement .)
-    PRINTLN         reduce using rule 9 (statements -> statements statement .)
+    RBRACE          reduce using rule 4 (statement -> OUT DOT PRINTLN LPAREN ID RPAREN SEMI .)
 

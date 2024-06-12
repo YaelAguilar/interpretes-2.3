@@ -2,55 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analizador Léxico y Sintáctico</title>
+    <title>Code Analyzer</title>
 </head>
 <body>
-    <h1>Analizador Léxico y Sintáctico</h1>
+    <h1>Code Analyzer</h1>
     <form method="post">
-        <textarea name="code" rows="10" cols="50" placeholder="Ingrese su código aquí..."></textarea><br>
-        <button type="submit">Analizar</button>
+        <textarea name="code" rows="10" cols="50" placeholder="Escribe tu código aquí..."></textarea><br>
+        <input type="submit" value="Analizar">
     </form>
-
-    {% if tokens %}
-    <h2>Resultados del Análisis Léxico</h2>
-    <table border="1">
-        <tr>
-            <th>Tokens</th>
-            <th>PR</th>
-            <th>ID</th>
-            <th>Números</th>
-            <th>Símbolos</th>
-            <th>Error</th>
-        </tr>
-        {% for tok in tokens %}
-        <tr>
-            <td>{{ tok.type }}</td>
-            <td>{% if tok.type in ['FOR', 'PRINTLN'] %}x{% endif %}</td>
-            <td>{% if tok.type == 'ID' %}x{% endif %}</td>
-            <td>{% if tok.type == 'NUMBER' %}x{% endif %}</td>
-            <td>{% if tok.type in ['PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LT', 'GT', 'LE', 'GE', 'EQ', 'NE', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMI'] %}x{% endif %}</td>
-            <td>{% if tok.type == 'ERROR' %}x{% endif %}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td>Total</td>
-            <td>{{ tokens | selectattr("type", "in", ['FOR', 'PRINTLN']) | list | length }}</td>
-            <td>{{ tokens | selectattr("type", "equalto", "ID") | list | length }}</td>
-            <td>{{ tokens | selectattr("type", "equalto", "NUMBER") | list | length }}</td>
-            <td>{{ tokens | selectattr("type", "in", ['PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'LT', 'GT', 'LE', 'GE', 'EQ', 'NE', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMI']) | list | length }}</td>
-            <td>{{ tokens | selectattr("type", "equalto", "ERROR") | list | length }}</td>
-        </tr>
-    </table>
-    {% endif %}
-
-    {% if errors %}
-    <h2>Errores del Analizador Sintáctico</h2>
-    <ul>
-        {% for error in errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
+    {% if result %}
+        <h2>Resultado:</h2>
+        <pre>{{ result }}</pre>
     {% endif %}
 </body>
 </html>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    form {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    textarea {
+        width: 400px;
+        height: 200px;
+        margin-bottom: 10px;
+    }
+
+    input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    pre {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
