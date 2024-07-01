@@ -82,3 +82,12 @@ def analyze_code(code):
         return result
     except Exception as e:
         return str(e)
+
+
+'''
+int i;
+for (i = 0; i <= 10; i++) {
+    out.println(i);
+}
+
+'''
